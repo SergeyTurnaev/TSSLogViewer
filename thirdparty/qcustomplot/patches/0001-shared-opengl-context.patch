@@ -1,0 +1,162 @@
+Subject: [PATCH] Share one OpenGL context across all QCustomPlot instances
+
+QCustomPlot 2.1.1 creates a separate QOpenGLContext, surface and
+QOpenGLPaintDevice for every widget that calls setOpenGl(true), and
+QCPPaintBufferGlFbo::draw() then calls mGlFrameBuffer->toImage() without
+making its own context current first.
+
+With a single plot per application that is harmless. With several plots
+alive at once (TSSLogViewer opens one PlotView per tab) the instances keep
+calling makeCurrent() on each other, and paintEvent() of a freshly shown tab
+reads whichever framebuffer happened to be current -- i.e. the previous
+tab's graph. Symptom: switching tabs appears to freeze, showing stale plots.
+
+Three changes:
+  1. QCPPaintBufferGlFbo::draw()         -- makeCurrent() before toImage().
+  2. QCPPaintBufferGlFbo::startPainting()-- re-apply size/DPR to the now-shared
+                                            paint device before painting.
+  3. QCustomPlot::setupOpenGl()          -- hand out one process-wide context,
+                                            surface and paint device.
+
+Because the singleton keeps its own QSharedPointer references, freeOpenGl()
+on one plot no longer destroys the context used by the others. The surface
+format (notably the multisample count) is taken from the first plot created.
+
+Apply from the repository root:
+    git apply thirdparty/qcustomplot/patches/0001-shared-opengl-context.patch
+
+--- a/thirdparty/qcustomplot/qcustomplot.cpp
++++ b/thirdparty/qcustomplot/qcustomplot.cpp
+@@ -878,6 +878,14 @@
+   
+   if (QOpenGLContext::currentContext() != context.data())
+     context->makeCurrent(context->surface());
++  // TSS: fix multi-instance OpenGL context -- the paint device is now shared between all
++  // QCustomPlot instances, so its size may still describe whichever buffer painted last.
++  // Re-apply our own geometry before painting into our framebuffer.
++  if (paintDevice->size() != mSize*mDevicePixelRatio)
++    paintDevice->setSize(mSize*mDevicePixelRatio);
++#ifdef QCP_DEVICEPIXELRATIO_SUPPORTED
++  paintDevice->setDevicePixelRatio(mDevicePixelRatio);
++#endif
+   mGlFrameBuffer->bind();
+   QCPPainter *result = new QCPPainter(paintDevice.data());
+ #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+@@ -908,6 +916,12 @@
+     qDebug() << Q_FUNC_INFO << "OpenGL frame buffer object doesn't exist, reallocateBuffer was not called?";
+     return;
+   }
++  // TSS: fix multi-instance OpenGL context -- toImage() reads the *current* context.
++  // Without making our own context current first, a QCustomPlot in another tab that
++  // painted last leaves its context current and we read its framebuffer instead of ours.
++  QSharedPointer<QOpenGLContext> context = mGlContext.toStrongRef();
++  if (context && QOpenGLContext::currentContext() != context.data())
++    context->makeCurrent(context->surface());
+   QImage bufferImage = mGlFrameBuffer->toImage();
+ #ifdef QCP_DEVICEPIXELRATIO_SUPPORTED
+   // The FBO stores physical pixels, but toImage returns a DPR-1 image.
+@@ -15937,45 +15951,73 @@
+ 
+   \see freeOpenGl
+ */
++// TSS: fix multi-instance OpenGL context -- one shared context/surface/paint device for the
++// whole application instead of one per QCustomPlot. With a context per widget, every instance
++// kept calling makeCurrent() and stomping on the others, so a tab could end up displaying the
++// framebuffer of the tab shown before it. The singleton holds its own references, so closing
++// one plot never tears the context down for the rest.
++#ifdef QCP_OPENGL_FBO
++namespace {
++struct QCPSharedGl
++{
++  QSharedPointer<QOpenGLContext>     context;
++  QSharedPointer<QSurface>           surface;
++  QSharedPointer<QOpenGLPaintDevice> paintDevice;
++};
++static QCPSharedGl &qcpSharedGl()
++{
++  static QCPSharedGl instance;
++  return instance;
++}
++} // namespace
++#endif
++
+ bool QCustomPlot::setupOpenGl()
+ {
+ #ifdef QCP_OPENGL_FBO
+   freeOpenGl();
+-  QSurfaceFormat proposedSurfaceFormat;
+-  proposedSurfaceFormat.setSamples(mOpenGlMultisamples);
++  QCPSharedGl &shared = qcpSharedGl();
++  if (!shared.context)
++  {
++    QSurfaceFormat proposedSurfaceFormat;
++    proposedSurfaceFormat.setSamples(mOpenGlMultisamples);
+ #ifdef QCP_OPENGL_OFFSCREENSURFACE
+-  QOffscreenSurface *surface = new QOffscreenSurface;
++    QOffscreenSurface *surface = new QOffscreenSurface;
+ #else
+-  QWindow *surface = new QWindow;
+-  surface->setSurfaceType(QSurface::OpenGLSurface);
++    QWindow *surface = new QWindow;
++    surface->setSurfaceType(QSurface::OpenGLSurface);
+ #endif
+-  surface->setFormat(proposedSurfaceFormat);
+-  surface->create();
+-  mGlSurface = QSharedPointer<QSurface>(surface);
+-  mGlContext = QSharedPointer<QOpenGLContext>(new QOpenGLContext);
+-  mGlContext->setFormat(mGlSurface->format());
+-  if (!mGlContext->create())
+-  {
+-    qDebug() << Q_FUNC_INFO << "Failed to create OpenGL context";
+-    mGlContext.clear();
+-    mGlSurface.clear();
+-    return false;
+-  }
+-  if (!mGlContext->makeCurrent(mGlSurface.data())) // context needs to be current to create paint device
+-  {
+-    qDebug() << Q_FUNC_INFO << "Failed to make opengl context current";
+-    mGlContext.clear();
+-    mGlSurface.clear();
+-    return false;
+-  }
+-  if (!QOpenGLFramebufferObject::hasOpenGLFramebufferObjects())
+-  {
+-    qDebug() << Q_FUNC_INFO << "OpenGL of this system doesn't support frame buffer objects";
+-    mGlContext.clear();
+-    mGlSurface.clear();
+-    return false;
++    surface->setFormat(proposedSurfaceFormat);
++    surface->create();
++    shared.surface = QSharedPointer<QSurface>(surface);
++    shared.context = QSharedPointer<QOpenGLContext>(new QOpenGLContext);
++    shared.context->setFormat(shared.surface->format());
++    if (!shared.context->create())
++    {
++      qDebug() << Q_FUNC_INFO << "Failed to create OpenGL context";
++      shared.context.clear();
++      shared.surface.clear();
++      return false;
++    }
++    if (!shared.context->makeCurrent(shared.surface.data())) // context needs to be current to create paint device
++    {
++      qDebug() << Q_FUNC_INFO << "Failed to make opengl context current";
++      shared.context.clear();
++      shared.surface.clear();
++      return false;
++    }
++    if (!QOpenGLFramebufferObject::hasOpenGLFramebufferObjects())
++    {
++      qDebug() << Q_FUNC_INFO << "OpenGL of this system doesn't support frame buffer objects";
++      shared.context.clear();
++      shared.surface.clear();
++      return false;
++    }
++    shared.paintDevice = QSharedPointer<QOpenGLPaintDevice>(new QOpenGLPaintDevice);
+   }
+-  mGlPaintDevice = QSharedPointer<QOpenGLPaintDevice>(new QOpenGLPaintDevice);
++  mGlSurface = shared.surface;
++  mGlContext = shared.context;
++  mGlPaintDevice = shared.paintDevice;
+   return true;
+ #elif defined(QCP_OPENGL_PBUFFER)
+   return QGLFormat::hasOpenGL();

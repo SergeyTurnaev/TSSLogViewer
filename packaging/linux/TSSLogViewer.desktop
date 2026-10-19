@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=TSSLogViewer
+Comment=TSS race log viewer
+Exec=TSSLogViewer
+Icon=TSSLogViewer
+Categories=Utility;
+Terminal=false

@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/de.png</file>
+        <file>res/en.png</file>
+        <file>res/ru.png</file>
+        <file>res/zh_TW.png</file>
+        <file>res/it.png</file>
+        <file>res/fr.png</file>
+        <file>res/es.png</file>
+        <file>res/ro.png</file>
+        <file>res/pl.png</file>
+        <file>res/ja.png</file>
+        <file>res/cs.png</file>
+    </qresource>
+</RCC>

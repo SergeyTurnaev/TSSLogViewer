@@ -1,0 +1,48 @@
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Существующий тег выпуска (например, v26.2)'
+        required: true
+        type: string
+      prerelease:
+        description: 'Предварительный выпуск'
+        type: boolean
+        default: false
+      draft:
+        description: 'Создать черновик'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      ref: refs/tags/${{ inputs.tag }}
+      full_matrix: true
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.tag }}
+          name: ${{ inputs.tag }}
+          draft: ${{ inputs.draft }}
+          prerelease: ${{ inputs.prerelease }}
+          files: dist/*
+          fail_on_unmatched_files: true
+          body: |
+            macOS: ad-hoc signature only; this build is not signed with an Apple Developer ID and is not notarized.

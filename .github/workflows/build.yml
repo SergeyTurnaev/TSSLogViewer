@@ -1,0 +1,216 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      ref:
+        description: 'Ветка, тег или коммит для сборки'
+        type: string
+        default: ''
+      full_matrix:
+        description: 'Собрать все платформы при вызове из другого workflow'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+env:
+  QT_VERSION: 6.10.1
+
+jobs:
+  set-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.compute.outputs.matrix }}
+    steps:
+      - id: compute
+        env:
+          FULL: ${{ inputs.full_matrix == true || github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/') }}
+        shell: bash
+        run: |
+          set -eu
+          ALL='[
+            {"os":"ubuntu-22.04","arch":"x86_64","package":"appimage"},
+            {"os":"windows-2022","arch":"x64","package":"winzip"},
+            {"os":"macos-latest","arch":"universal","cmake_arch":"x86_64;arm64","package":"macapp"}
+          ]'
+          if [ "$FULL" = "true" ]; then
+            M=$(echo "$ALL" | jq -c '{include: .}')
+          else
+            M=$(echo "$ALL" | jq -c '{include: [.[] | select(.os | startswith("ubuntu"))]}')
+          fi
+          echo "matrix=$M" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: set-matrix
+    name: TSSLogViewer / ${{ matrix.os }} / ${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.set-matrix.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+          persist-credentials: false
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          cache: true
+          install-deps: false
+
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Сначала обновляем индексы: версии из образа runner могут исчезнуть с зеркала.
+          sudo apt-get update -o Acquire::Retries=3
+          sudo apt-get install -y --no-install-recommends -o Acquire::Retries=3 \
+            ninja-build \
+            libgl1-mesa-dev libglu1-mesa-dev \
+            libxkbcommon-dev libxkbcommon-x11-0 \
+            libxcb1 libxcb-cursor0 libxcb-glx0 libxcb-icccm4 libxcb-image0 \
+            libxcb-keysyms1 libxcb-randr0 libxcb-render0 libxcb-render-util0 \
+            libxcb-shape0 libxcb-shm0 libxcb-sync1 libxcb-util1 \
+            libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 \
+            libegl1 libopengl0 libfuse2
+
+      - name: Set up MSVC
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Install Ninja (Windows)
+        if: runner.os == 'Windows'
+        uses: seanmiddleditch/gha-setup-ninja@v5
+
+      - name: Install Ninja (macOS)
+        if: runner.os == 'macOS'
+        run: brew install ninja
+
+      - name: Configure (Linux)
+        if: runner.os == 'Linux'
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+
+      - name: Configure (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+
+      - name: Configure (macOS)
+        if: runner.os == 'macOS'
+        run: >
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+          "-DCMAKE_OSX_ARCHITECTURES=${{ matrix.cmake_arch }}"
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Read version
+        id: version
+        shell: bash
+        run: |
+          set -eu
+          VERSION=$(cat build/VERSION.txt)
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+(\.[0-9]+){0,2}$ ]]; then
+            echo "Invalid application version: $VERSION" >&2
+            exit 1
+          fi
+          STEM="TSSLogViewer-v${VERSION}"
+          case "${{ matrix.package }}" in
+            appimage) ART="${STEM}-linux-${{ matrix.arch }}.AppImage" ;;
+            macapp) ART="${STEM}-macos-${{ matrix.arch }}.app.zip" ;;
+            winzip) ART="${STEM}-windows-${{ matrix.arch }}.zip" ;;
+          esac
+          echo "stem=$STEM" >> "$GITHUB_OUTPUT"
+          echo "artifact=$ART" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare matching sources and licenses
+        shell: bash
+        run: |
+          set -eu
+          mkdir -p viewer-package/Source viewer-package/licenses/TSSLogViewer
+          git archive --format=zip --output="$GITHUB_WORKSPACE/viewer-package/Source/TSSLogViewer-source.zip" HEAD
+          cp LICENSE THIRD_PARTY_NOTICES.md viewer-package/licenses/TSSLogViewer/
+          cp -R licenses viewer-package/licenses/TSSLogViewer/
+
+      - name: Package Windows portable ZIP
+        if: matrix.package == 'winzip'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $dist = "dist/${{ steps.version.outputs.stem }}"
+          New-Item -ItemType Directory -Force -Path $dist | Out-Null
+          Copy-Item -LiteralPath 'build/TSSLogViewer.exe', 'build/VERSION.txt' -Destination $dist
+          windeployqt --release --translations en,ru,de,zh_TW --dir $dist "$dist/TSSLogViewer.exe"
+          if ($LASTEXITCODE -ne 0) { throw "windeployqt failed: $LASTEXITCODE" }
+          Copy-Item -Path 'viewer-package/*' -Destination $dist -Recurse
+          Compress-Archive -Path $dist -DestinationPath "${{ steps.version.outputs.artifact }}" -Force
+
+      - name: Package Linux AppImage
+        if: matrix.package == 'appimage'
+        shell: bash
+        run: |
+          set -eux
+          mkdir -p tools
+          curl --fail --location --retry 3 -o tools/linuxdeploy https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          curl --fail --location --retry 3 -o tools/linuxdeploy-plugin-qt https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
+          chmod +x tools/linuxdeploy tools/linuxdeploy-plugin-qt
+          export APPDIR="$PWD/AppDir"
+          DESTDIR="$APPDIR" cmake --install build --prefix /usr
+          mkdir -p "$APPDIR/usr/share/TSSLogViewer"
+          cp -R viewer-package/. "$APPDIR/usr/share/TSSLogViewer/"
+          QT_TRANSLATIONS=$(qmake -query QT_INSTALL_TRANSLATIONS)
+          QT_LIBDIR=$(qmake -query QT_INSTALL_LIBS)
+          export QMAKE=$(command -v qmake)
+          export LD_LIBRARY_PATH="${QT_LIBDIR}:${LD_LIBRARY_PATH:-}"
+          ./tools/linuxdeploy --appdir "$APPDIR" -e build/TSSLogViewer --plugin qt
+          mkdir -p "$APPDIR/usr/translations"
+          for lang in en ru de zh_TW; do
+            if [ -f "$QT_TRANSLATIONS/qtbase_${lang}.qm" ]; then
+              cp "$QT_TRANSLATIONS/qtbase_${lang}.qm" "$APPDIR/usr/translations/"
+            fi
+          done
+          ./tools/linuxdeploy --appdir "$APPDIR" --output appimage
+          mv -v TSSLogViewer*.AppImage "${{ steps.version.outputs.artifact }}"
+
+      - name: Package macOS application
+        if: matrix.package == 'macapp'
+        shell: bash
+        run: |
+          set -eux
+          APP="build/${{ steps.version.outputs.stem }}.app"
+          mv build/TSSLogViewer.app "$APP"
+          macdeployqt "$APP" -always-overwrite
+          cp -R viewer-package/. "$APP/Contents/Resources/"
+          QT_TRANSLATIONS=$(qmake -query QT_INSTALL_TRANSLATIONS)
+          mkdir -p "$APP/Contents/Resources/translations"
+          for lang in en ru de zh_TW; do
+            if [ -f "$QT_TRANSLATIONS/qtbase_${lang}.qm" ]; then
+              cp "$QT_TRANSLATIONS/qtbase_${lang}.qm" "$APP/Contents/Resources/translations/"
+            fi
+          done
+          # Публичный CI не требует сертификатов: только локальная ad-hoc подпись, без нотарификации.
+          codesign --force --deep --sign - "$APP"
+          codesign --verify --deep --strict "$APP"
+          ditto -c -k --keepParent "$APP" "${{ steps.version.outputs.artifact }}"
+          echo 'macOS artifact has an ad-hoc signature only; it is not Developer ID signed or notarized.' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.version.outputs.artifact }}
+          path: ${{ steps.version.outputs.artifact }}
+          retention-days: 14
+          if-no-files-found: error
