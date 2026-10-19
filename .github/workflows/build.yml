@@ -153,8 +153,18 @@ jobs:
           $dist = "dist/${{ steps.version.outputs.stem }}"
           New-Item -ItemType Directory -Force -Path $dist | Out-Null
           Copy-Item -LiteralPath 'build/TSSLogViewer.exe', 'build/VERSION.txt' -Destination $dist
-          windeployqt --release --translations en,ru,de,zh_TW --dir $dist "$dist/TSSLogViewer.exe"
+          windeployqt --release --no-translations --dir $dist "$dist/TSSLogViewer.exe"
           if ($LASTEXITCODE -ne 0) { throw "windeployqt failed: $LASTEXITCODE" }
+          # Приложение загружает qtbase_*.qm напрямую, без объединённого qt_*.qm.
+          $qtTranslations = qmake -query QT_INSTALL_TRANSLATIONS
+          if ($LASTEXITCODE -ne 0) { throw "qmake failed: $LASTEXITCODE" }
+          New-Item -ItemType Directory -Path "$dist/translations" -Force | Out-Null
+          foreach ($language in @('en', 'ru', 'de', 'zh_TW')) {
+            $translation = Join-Path $qtTranslations "qtbase_$language.qm"
+            if (Test-Path -LiteralPath $translation) {
+              Copy-Item -LiteralPath $translation -Destination "$dist/translations/"
+            }
+          }
           Copy-Item -Path 'viewer-package/*' -Destination $dist -Recurse
           Compress-Archive -Path $dist -DestinationPath "${{ steps.version.outputs.artifact }}" -Force
 
