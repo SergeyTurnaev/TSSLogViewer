@@ -156,29 +156,35 @@
         <translation>Soubor</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.ui" line="174"/>
+        <location filename="../../src/mainwindow.ui" line="175"/>
         <source>Open file...</source>
         <translation>Otevřít soubor...</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.ui" line="179"/>
+        <location filename="../../src/mainwindow.ui" line="180"/>
         <source>Exit</source>
         <translation>Konec</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="179"/>
-        <location filename="../../src/mainwindow.cpp" line="328"/>
+        <location filename="../../src/mainwindow.ui" line="184"/>
+        <source>Application updates...</source>
+        <translation>Aktualizace aplikací...</translation>
+    </message>
+    <message>
+        <location filename="../../src/mainwindow.cpp" line="188"/>
+        <location filename="../../src/mainwindow.cpp" line="337"/>
+        <location filename="../../src/mainwindow.cpp" line="337"/>
         <source>Please select log file</source>
         <translation>Vyberte prosím soubor záznamu</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="272"/>
+        <location filename="../../src/mainwindow.cpp" line="281"/>
         <source>No Name</source>
         <comment>The name of the device for the log</comment>
         <translation>Bez názvu</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="284"/>
+        <location filename="../../src/mainwindow.cpp" line="293"/>
         <source> (not complete race)</source>
         <comment>Added to the log name if the log is not complete</comment>
         <translation> (nedokončená jízda)</translation>
@@ -209,6 +215,157 @@
     <message>
         <source>Do you want to associate .tsslog files with TSSLogViewer?</source>
         <translation type="vanished">Chcete přidružit soubory .tsslog k aplikaci TSSLogViewer?</translation>
+    </message>
+</context>
+<context>
+    <name>TSSUpdateDialog</name>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="5"/>
+        <source>Application updates</source>
+        <translation>Aktualizace aplikací</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="8"/>
+        <source>Check for a new application version.</source>
+        <translation>Vyhledat novou verzi aplikace.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="11"/>
+        <source>Check for updates automatically</source>
+        <translation>Automaticky kontrolovat aktualizace</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="12"/>
+        <source>Download updates automatically</source>
+        <translation>Automaticky stahovat aktualizace</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="13"/>
+        <source>Before restarting, close the other application and finish all device operations. Settings and logs will be preserved.</source>
+        <translation>Před restartem zavřete druhou aplikaci a dokončete všechny operace se zařízeními. Nastavení a protokoly zůstanou zachovány.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="15"/>
+        <source>Check now</source>
+        <translation>Zkontrolovat nyní</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="17"/>
+        <source>Download update</source>
+        <translation>Stáhnout aktualizaci</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="18"/>
+        <source>Update and restart</source>
+        <translation>Aktualizovat a restartovat</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="19"/>
+        <source>Later</source>
+        <translation>Později</translation>
+    </message>
+</context>
+<context>
+    <name>UpdateController</name>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="40"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <source>Application updates</source>
+        <translation>Aktualizace aplikací</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="40"/>
+        <source>An interrupted update needs recovery. Start the application using its shortcut or run TSSUpdater.exe.</source>
+        <translation>Přerušená aktualizace vyžaduje obnovení. Spusťte aplikaci pomocí zástupce nebo spusťte TSSUpdater.exe.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
+        <source>An update is in progress. Please try again shortly.</source>
+        <translation>Probíhá aktualizace. Zkuste to za chvíli znovu.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="76"/>
+        <source>Automatic updates are not configured for this build. Install a signed release to enable them.</source>
+        <translation>Pro toto sestavení nejsou automatické aktualizace nastaveny. Povolíte je instalací podepsané verze.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="97"/>
+        <source>The update could not be installed. Your previous version was preserved.
+%1</source>
+        <translation>Aktualizaci se nepodařilo nainstalovat. Předchozí verze byla zachována.
+%1</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="98"/>
+        <source>The update was interrupted. The previous installation has been restored.</source>
+        <translation>Aktualizace byla přerušena. Předchozí instalace byla obnovena.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="116"/>
+        <source>Update failed: %1</source>
+        <translation>Aktualizace selhala: %1</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="125"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="159"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="159"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
+        <source>The other application is already checking or downloading an update.</source>
+        <translation>Druhá aplikace již kontroluje nebo stahuje aktualizaci.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="128"/>
+        <source>Checking for updates...</source>
+        <translation>Kontrola aktualizací...</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="143"/>
+        <source>You have the latest version.</source>
+        <translation>Máte nainstalovanou nejnovější verzi.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="146"/>
+        <source>Available: TSSLimiterX %1, TSSLogViewer %2</source>
+        <translation>K dispozici: TSSLimiterX %1, TSSLogViewer %2</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="147"/>
+        <source>Available: TSSLogViewer %1</source>
+        <translation>K dispozici: TSSLogViewer %1</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="162"/>
+        <source>Preparing download...</source>
+        <translation>Příprava stahování...</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="189"/>
+        <source>The update is ready. Restart to install it.</source>
+        <translation>Aktualizace je připravena. Nainstalujete ji restartem.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="196"/>
+        <source>Downloading update (%1 of %2)...</source>
+        <translation>Stahování aktualizace (%1 z %2)...</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="207"/>
+        <source>The download was interrupted. You can retry later.</source>
+        <translation>Stahování bylo přerušeno. Můžete to zkusit později.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <source>Finish device operations and disconnect devices before updating the applications.</source>
+        <translation>Před aktualizací aplikací dokončete operace se zařízeními a odpojte je.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="238"/>
+        <source>Update installation was cancelled or could not be started.</source>
+        <translation>Instalace aktualizace byla zrušena nebo ji nebylo možné spustit.</translation>
     </message>
 </context>
 </TS>

@@ -32,3 +32,6 @@ ui_*.h
 qrc_*.cpp
 .DS_Store
 Thumbs.db
+
+# Закрытые ключи обновлений никогда не публикуются.
+*-private.pem

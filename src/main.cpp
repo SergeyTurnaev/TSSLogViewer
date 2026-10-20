@@ -8,12 +8,16 @@
 #include <QLibraryInfo>
 #ifdef Q_OS_WIN
 #include <QFileInfo>
+#include <QDir>
 #include <QRegularExpression>
 #endif
 #include <memory>
 #include <list>
 
 #include "version.h"
+#ifdef Q_OS_WIN
+#include "updatecontroller.h"
+#endif
 
 static QIcon loadAppIcon()
 {
@@ -27,6 +31,10 @@ static QIcon loadAppIcon()
 #ifdef Q_OS_WIN
 static QString fileAssociationCommand()
 {
+    const QString updaterPath = QCoreApplication::applicationDirPath() + QStringLiteral("/TSSUpdater.exe");
+    if (QFileInfo::exists(updaterPath)) {
+        return '"' + QDir::toNativeSeparators(updaterPath) + QStringLiteral("\" --launch TSSLogViewer.exe \"%1\"");
+    }
     const QString appPath = QCoreApplication::applicationFilePath().replace('/', '\\');
     return '"' + appPath + QStringLiteral("\" \"%1\"");
 }
@@ -147,9 +155,12 @@ int main(int argc, char *argv[])
 
     a.setWindowIcon(loadAppIcon());
     auto translators = setupTranslators();
+#ifdef Q_OS_WIN
+    if (!UpdateController::acquireInstallationLock()) return 0;
+#endif
 
     MainWindow w(translators);
-    if (a.arguments().size() > 1) {
+    if (a.arguments().size() > 1 && !a.arguments().at(1).startsWith("--tss-update-")) {
         QString filePath = a.arguments().at(1);
         w.openLog(filePath);
     }

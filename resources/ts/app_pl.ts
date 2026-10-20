@@ -156,29 +156,35 @@
         <translation>Plik</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.ui" line="174"/>
+        <location filename="../../src/mainwindow.ui" line="175"/>
         <source>Open file...</source>
         <translation>Otwórz plik...</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.ui" line="179"/>
+        <location filename="../../src/mainwindow.ui" line="180"/>
         <source>Exit</source>
         <translation>Zakończ</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="179"/>
-        <location filename="../../src/mainwindow.cpp" line="328"/>
+        <location filename="../../src/mainwindow.ui" line="184"/>
+        <source>Application updates...</source>
+        <translation>Aktualizacje programów...</translation>
+    </message>
+    <message>
+        <location filename="../../src/mainwindow.cpp" line="188"/>
+        <location filename="../../src/mainwindow.cpp" line="337"/>
+        <location filename="../../src/mainwindow.cpp" line="337"/>
         <source>Please select log file</source>
         <translation>Wybierz plik dziennika</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="272"/>
+        <location filename="../../src/mainwindow.cpp" line="281"/>
         <source>No Name</source>
         <comment>The name of the device for the log</comment>
         <translation>Bez nazwy</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="284"/>
+        <location filename="../../src/mainwindow.cpp" line="293"/>
         <source> (not complete race)</source>
         <comment>Added to the log name if the log is not complete</comment>
         <translation> (niedokończony przejazd)</translation>
@@ -209,6 +215,157 @@
     <message>
         <source>Do you want to associate .tsslog files with TSSLogViewer?</source>
         <translation type="vanished">Czy chcesz skojarzyć pliki .tsslog z aplikacją TSSLogViewer?</translation>
+    </message>
+</context>
+<context>
+    <name>TSSUpdateDialog</name>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="5"/>
+        <source>Application updates</source>
+        <translation>Aktualizacje programów</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="8"/>
+        <source>Check for a new application version.</source>
+        <translation>Sprawdź dostępność nowej wersji programu.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="11"/>
+        <source>Check for updates automatically</source>
+        <translation>Automatycznie sprawdzaj aktualizacje</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="12"/>
+        <source>Download updates automatically</source>
+        <translation>Automatycznie pobieraj aktualizacje</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="13"/>
+        <source>Before restarting, close the other application and finish all device operations. Settings and logs will be preserved.</source>
+        <translation>Przed ponownym uruchomieniem zamknij drugi program i zakończ wszystkie operacje na urządzeniach. Ustawienia i logi zostaną zachowane.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="15"/>
+        <source>Check now</source>
+        <translation>Sprawdź teraz</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="17"/>
+        <source>Download update</source>
+        <translation>Pobierz aktualizację</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="18"/>
+        <source>Update and restart</source>
+        <translation>Aktualizuj i uruchom ponownie</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="19"/>
+        <source>Later</source>
+        <translation>Później</translation>
+    </message>
+</context>
+<context>
+    <name>UpdateController</name>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="40"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <source>Application updates</source>
+        <translation>Aktualizacje programów</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="40"/>
+        <source>An interrupted update needs recovery. Start the application using its shortcut or run TSSUpdater.exe.</source>
+        <translation>Przerwana aktualizacja wymaga odzyskania. Uruchom program za pomocą skrótu lub uruchom TSSUpdater.exe.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
+        <source>An update is in progress. Please try again shortly.</source>
+        <translation>Trwa aktualizacja. Spróbuj ponownie za chwilę.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="76"/>
+        <source>Automatic updates are not configured for this build. Install a signed release to enable them.</source>
+        <translation>Aktualizacje automatyczne nie są skonfigurowane dla tej kompilacji. Zainstaluj podpisane wydanie, aby je włączyć.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="97"/>
+        <source>The update could not be installed. Your previous version was preserved.
+%1</source>
+        <translation>Nie udało się zainstalować aktualizacji. Poprzednia wersja została zachowana.
+%1</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="98"/>
+        <source>The update was interrupted. The previous installation has been restored.</source>
+        <translation>Aktualizacja została przerwana. Przywrócono poprzednią instalację.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="116"/>
+        <source>Update failed: %1</source>
+        <translation>Aktualizacja nie powiodła się: %1</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="125"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="159"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="159"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
+        <source>The other application is already checking or downloading an update.</source>
+        <translation>Drugi program już sprawdza lub pobiera aktualizację.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="128"/>
+        <source>Checking for updates...</source>
+        <translation>Sprawdzanie aktualizacji...</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="143"/>
+        <source>You have the latest version.</source>
+        <translation>Masz zainstalowaną najnowszą wersję.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="146"/>
+        <source>Available: TSSLimiterX %1, TSSLogViewer %2</source>
+        <translation>Dostępne: TSSLimiterX %1, TSSLogViewer %2</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="147"/>
+        <source>Available: TSSLogViewer %1</source>
+        <translation>Dostępny: TSSLogViewer %1</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="162"/>
+        <source>Preparing download...</source>
+        <translation>Przygotowywanie pobierania...</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="189"/>
+        <source>The update is ready. Restart to install it.</source>
+        <translation>Aktualizacja jest gotowa. Uruchom ponownie, aby ją zainstalować.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="196"/>
+        <source>Downloading update (%1 of %2)...</source>
+        <translation>Pobieranie aktualizacji (%1 z %2)...</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="207"/>
+        <source>The download was interrupted. You can retry later.</source>
+        <translation>Pobieranie zostało przerwane. Możesz spróbować ponownie później.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <source>Finish device operations and disconnect devices before updating the applications.</source>
+        <translation>Przed aktualizacją programów zakończ operacje na urządzeniach i rozłącz je.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="238"/>
+        <source>Update installation was cancelled or could not be started.</source>
+        <translation>Instalacja aktualizacji została anulowana lub nie mogła się rozpocząć.</translation>
     </message>
 </context>
 </TS>

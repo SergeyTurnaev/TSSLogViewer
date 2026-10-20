@@ -7,6 +7,9 @@
 #include <QLibraryInfo>
 #include "Zippy/Zippy.hpp"
 #include "plotview.h"
+#ifdef Q_OS_WIN
+#include "updatecontroller.h"
+#endif
 
 void MainWindow::setupLocale()
 {
@@ -90,6 +93,12 @@ MainWindow::MainWindow(std::list<std::shared_ptr<QTranslator>> translators, QWid
     ui->setupUi(this);
 
     setupLocale();
+
+#ifdef Q_OS_WIN
+    new UpdateController(this, ui->actionApplicationUpdates, [] { return QApplication::activeModalWidget() == nullptr; });
+#else
+    ui->actionApplicationUpdates->setVisible(false);
+#endif
 
     QSettings settings;
     restoreGeometry(settings.value("geometry").toByteArray());

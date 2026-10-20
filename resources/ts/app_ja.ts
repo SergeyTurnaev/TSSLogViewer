@@ -156,29 +156,35 @@
         <translation>ファイル</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.ui" line="174"/>
+        <location filename="../../src/mainwindow.ui" line="175"/>
         <source>Open file...</source>
         <translation>ファイルを開く...</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.ui" line="179"/>
+        <location filename="../../src/mainwindow.ui" line="180"/>
         <source>Exit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="179"/>
-        <location filename="../../src/mainwindow.cpp" line="328"/>
+        <location filename="../../src/mainwindow.ui" line="184"/>
+        <source>Application updates...</source>
+        <translation>アプリの更新...</translation>
+    </message>
+    <message>
+        <location filename="../../src/mainwindow.cpp" line="188"/>
+        <location filename="../../src/mainwindow.cpp" line="337"/>
+        <location filename="../../src/mainwindow.cpp" line="337"/>
         <source>Please select log file</source>
         <translation>ログファイルを選択してください</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="272"/>
+        <location filename="../../src/mainwindow.cpp" line="281"/>
         <source>No Name</source>
         <comment>The name of the device for the log</comment>
         <translation>名称未設定</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="284"/>
+        <location filename="../../src/mainwindow.cpp" line="293"/>
         <source> (not complete race)</source>
         <comment>Added to the log name if the log is not complete</comment>
         <translation>（未完走）</translation>
@@ -209,6 +215,157 @@
     <message>
         <source>Do you want to associate .tsslog files with TSSLogViewer?</source>
         <translation type="vanished">.tsslogファイルをTSSLogViewerに関連付けますか？</translation>
+    </message>
+</context>
+<context>
+    <name>TSSUpdateDialog</name>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="5"/>
+        <source>Application updates</source>
+        <translation>アプリの更新</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="8"/>
+        <source>Check for a new application version.</source>
+        <translation>アプリの新しいバージョンを確認します。</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="11"/>
+        <source>Check for updates automatically</source>
+        <translation>更新を自動的に確認する</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="12"/>
+        <source>Download updates automatically</source>
+        <translation>更新を自動的にダウンロードする</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="13"/>
+        <source>Before restarting, close the other application and finish all device operations. Settings and logs will be preserved.</source>
+        <translation>再起動する前に、もう一方のアプリを閉じ、デバイスの操作をすべて完了してください。設定とログは保持されます。</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="15"/>
+        <source>Check now</source>
+        <translation>今すぐ確認</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="17"/>
+        <source>Download update</source>
+        <translation>更新をダウンロード</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="18"/>
+        <source>Update and restart</source>
+        <translation>更新して再起動</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="19"/>
+        <source>Later</source>
+        <translation>後で</translation>
+    </message>
+</context>
+<context>
+    <name>UpdateController</name>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="40"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <source>Application updates</source>
+        <translation>アプリの更新</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="40"/>
+        <source>An interrupted update needs recovery. Start the application using its shortcut or run TSSUpdater.exe.</source>
+        <translation>中断された更新の復旧が必要です。ショートカットからアプリを起動するか、TSSUpdater.exe を実行してください。</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
+        <source>An update is in progress. Please try again shortly.</source>
+        <translation>更新中です。しばらくしてからもう一度お試しください。</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="76"/>
+        <source>Automatic updates are not configured for this build. Install a signed release to enable them.</source>
+        <translation>このビルドでは自動更新が設定されていません。有効にするには署名済みのリリースをインストールしてください。</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="97"/>
+        <source>The update could not be installed. Your previous version was preserved.
+%1</source>
+        <translation>更新をインストールできませんでした。以前のバージョンは保持されています。
+%1</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="98"/>
+        <source>The update was interrupted. The previous installation has been restored.</source>
+        <translation>更新が中断されました。以前のインストール状態に復元されました。</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="116"/>
+        <source>Update failed: %1</source>
+        <translation>更新に失敗しました：%1</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="125"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="159"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="159"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
+        <source>The other application is already checking or downloading an update.</source>
+        <translation>もう一方のアプリが更新の確認またはダウンロードを実行中です。</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="128"/>
+        <source>Checking for updates...</source>
+        <translation>更新を確認中...</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="143"/>
+        <source>You have the latest version.</source>
+        <translation>最新バージョンがインストールされています。</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="146"/>
+        <source>Available: TSSLimiterX %1, TSSLogViewer %2</source>
+        <translation>利用可能：TSSLimiterX %1、TSSLogViewer %2</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="147"/>
+        <source>Available: TSSLogViewer %1</source>
+        <translation>利用可能：TSSLogViewer %1</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="162"/>
+        <source>Preparing download...</source>
+        <translation>ダウンロードを準備中...</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="189"/>
+        <source>The update is ready. Restart to install it.</source>
+        <translation>更新の準備ができました。インストールするには再起動してください。</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="196"/>
+        <source>Downloading update (%1 of %2)...</source>
+        <translation>更新をダウンロード中（%1 / %2）...</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="207"/>
+        <source>The download was interrupted. You can retry later.</source>
+        <translation>ダウンロードが中断されました。後でもう一度お試しいただけます。</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <source>Finish device operations and disconnect devices before updating the applications.</source>
+        <translation>アプリを更新する前に、デバイスの操作を完了し、接続を解除してください。</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="238"/>
+        <source>Update installation was cancelled or could not be started.</source>
+        <translation>更新のインストールがキャンセルされたか、開始できませんでした。</translation>
     </message>
 </context>
 </TS>

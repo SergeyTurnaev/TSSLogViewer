@@ -1,0 +1,4 @@
+// SPDX-License-Identifier: MIT
+#pragma once
+// Открытый ключ выпуска. Закрытый ключ никогда не включается в приложение.
+inline constexpr char TssUpdatePublicKey[] = R"key(@TSS_UPDATE_KEY_BLOB@)key";

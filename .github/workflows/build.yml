@@ -16,6 +16,10 @@ on:
         description: 'Собрать все платформы при вызове из другого workflow'
         type: boolean
         default: true
+      require_signed_updates:
+        description: 'Требовать подпись Windows-обновлений при выпуске'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -117,6 +121,22 @@ jobs:
       - name: Build
         run: cmake --build build --parallel
 
+      - name: Test Windows updater and recovery
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $keys = Join-Path $env:RUNNER_TEMP 'updater-test-keys'
+          & ./updater/tools/New-UpdateKey.ps1 -PrivateKeyPath "$keys/test-private.pem" -PublicKeyPath "$keys/test-public.txt"
+          cmake -S updater -B build-updater-tests -G Ninja -DCMAKE_BUILD_TYPE=Release -DTSS_UPDATER_BUILD_CLIENT=OFF -DTSS_UPDATER_BUILD_TESTS=ON "-DTSS_UPDATE_PUBLIC_KEY=$keys/test-public.txt"
+          if ($LASTEXITCODE) { throw 'Updater test configure failed' }
+          cmake --build build-updater-tests
+          if ($LASTEXITCODE) { throw 'Updater test build failed' }
+          ctest --test-dir build-updater-tests --output-on-failure
+          if ($LASTEXITCODE) { throw 'Updater protocol tests failed' }
+          $fixture = Join-Path $env:ProgramFiles "TSSUpdaterTests-$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT"
+          & ./updater/tests/integration.ps1 -Updater build-updater-tests/TSSUpdater.exe -CoreTests build-updater-tests/tss_update_tests.exe -PrivateKey "$keys/test-private.pem" -PublicKey "$keys/test-public.txt" -Workspace $fixture
+
       - name: Read version
         id: version
         shell: bash
@@ -144,10 +164,15 @@ jobs:
           git archive --format=zip --output="$GITHUB_WORKSPACE/viewer-package/Source/TSSLogViewer-source.zip" HEAD
           cp LICENSE THIRD_PARTY_NOTICES.md viewer-package/licenses/TSSLogViewer/
           cp -R licenses viewer-package/licenses/TSSLogViewer/
+          mkdir -p viewer-package/licenses/TSSUpdater
+          cp updater/LICENSE viewer-package/licenses/TSSUpdater/LICENSE
 
       - name: Package Windows portable ZIP
         if: matrix.package == 'winzip'
         shell: pwsh
+        env:
+          TSS_UPDATE_PRIVATE_KEY: ${{ secrets.TSS_UPDATE_PRIVATE_KEY }}
+          REQUIRE_SIGNATURE: ${{ inputs.require_signed_updates }}
         run: |
           $ErrorActionPreference = 'Stop'
           $dist = "dist/${{ steps.version.outputs.stem }}"
@@ -166,7 +191,23 @@ jobs:
             }
           }
           Copy-Item -Path 'viewer-package/*' -Destination $dist -Recurse
+          Copy-Item -LiteralPath build/TSSUpdater.exe -Destination $dist
+          $version = (Get-Content -LiteralPath build/VERSION.txt -Raw).Trim()
+          & ./updater/tools/New-UpdatePackage.ps1 -SourceDir $dist -OutputDir update-feed `
+            -Product tss-viewer-windows-x64 -Version $version -ViewerVersion $version `
+            -AllowUnsignedBuild:($env:REQUIRE_SIGNATURE -ne 'true')
+          if (Test-Path -LiteralPath update-feed/latest.tssupdate) {
+            Compress-Archive -Path 'update-feed/*' -DestinationPath 'TSSLogViewer-windows-update.zip'
+          }
           Compress-Archive -Path $dist -DestinationPath "${{ steps.version.outputs.artifact }}" -Force
+
+      - name: Upload signed Windows update feed
+        if: matrix.package == 'winzip'
+        uses: actions/upload-artifact@v4
+        with:
+          name: TSSLogViewer-windows-update.zip
+          path: TSSLogViewer-windows-update.zip
+          if-no-files-found: ignore
 
       - name: Package Linux AppImage
         if: matrix.package == 'appimage'

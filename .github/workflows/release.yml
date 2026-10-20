@@ -25,6 +25,8 @@ jobs:
     with:
       ref: refs/tags/${{ inputs.tag }}
       full_matrix: true
+      require_signed_updates: true
+    secrets: inherit
 
   publish:
     needs: build

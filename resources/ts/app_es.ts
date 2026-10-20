@@ -156,29 +156,35 @@
         <translation>Archivo</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.ui" line="174"/>
+        <location filename="../../src/mainwindow.ui" line="175"/>
         <source>Open file...</source>
         <translation>Abrir archivo...</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.ui" line="179"/>
+        <location filename="../../src/mainwindow.ui" line="180"/>
         <source>Exit</source>
         <translation>Salir</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="179"/>
-        <location filename="../../src/mainwindow.cpp" line="328"/>
+        <location filename="../../src/mainwindow.ui" line="184"/>
+        <source>Application updates...</source>
+        <translation>Actualizaciones de las aplicaciones...</translation>
+    </message>
+    <message>
+        <location filename="../../src/mainwindow.cpp" line="188"/>
+        <location filename="../../src/mainwindow.cpp" line="337"/>
+        <location filename="../../src/mainwindow.cpp" line="337"/>
         <source>Please select log file</source>
         <translation>Seleccione un archivo de registro</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="272"/>
+        <location filename="../../src/mainwindow.cpp" line="281"/>
         <source>No Name</source>
         <comment>The name of the device for the log</comment>
         <translation>Sin nombre</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="284"/>
+        <location filename="../../src/mainwindow.cpp" line="293"/>
         <source> (not complete race)</source>
         <comment>Added to the log name if the log is not complete</comment>
         <translation> (carrera incompleta)</translation>
@@ -209,6 +215,157 @@
     <message>
         <source>Do you want to associate .tsslog files with TSSLogViewer?</source>
         <translation type="vanished">¿Desea asociar los archivos .tsslog con TSSLogViewer?</translation>
+    </message>
+</context>
+<context>
+    <name>TSSUpdateDialog</name>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="5"/>
+        <source>Application updates</source>
+        <translation>Actualizaciones de las aplicaciones</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="8"/>
+        <source>Check for a new application version.</source>
+        <translation>Buscar una nueva versión de la aplicación.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="11"/>
+        <source>Check for updates automatically</source>
+        <translation>Buscar actualizaciones automáticamente</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="12"/>
+        <source>Download updates automatically</source>
+        <translation>Descargar actualizaciones automáticamente</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="13"/>
+        <source>Before restarting, close the other application and finish all device operations. Settings and logs will be preserved.</source>
+        <translation>Antes de reiniciar, cierre la otra aplicación y termine todas las operaciones con los dispositivos. Se conservarán los ajustes y los registros.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="15"/>
+        <source>Check now</source>
+        <translation>Comprobar ahora</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="17"/>
+        <source>Download update</source>
+        <translation>Descargar actualización</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="18"/>
+        <source>Update and restart</source>
+        <translation>Actualizar y reiniciar</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="19"/>
+        <source>Later</source>
+        <translation>Más tarde</translation>
+    </message>
+</context>
+<context>
+    <name>UpdateController</name>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="40"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <source>Application updates</source>
+        <translation>Actualizaciones de las aplicaciones</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="40"/>
+        <source>An interrupted update needs recovery. Start the application using its shortcut or run TSSUpdater.exe.</source>
+        <translation>Es necesario recuperar una actualización interrumpida. Inicie la aplicación desde su acceso directo o ejecute TSSUpdater.exe.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
+        <source>An update is in progress. Please try again shortly.</source>
+        <translation>Hay una actualización en curso. Inténtelo de nuevo en unos instantes.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="76"/>
+        <source>Automatic updates are not configured for this build. Install a signed release to enable them.</source>
+        <translation>Las actualizaciones automáticas no están configuradas para esta compilación. Instale una versión firmada para activarlas.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="97"/>
+        <source>The update could not be installed. Your previous version was preserved.
+%1</source>
+        <translation>No se pudo instalar la actualización. Se ha conservado la versión anterior.
+%1</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="98"/>
+        <source>The update was interrupted. The previous installation has been restored.</source>
+        <translation>La actualización se interrumpió. Se ha restaurado la instalación anterior.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="116"/>
+        <source>Update failed: %1</source>
+        <translation>Error de actualización: %1</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="125"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="159"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="159"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
+        <source>The other application is already checking or downloading an update.</source>
+        <translation>La otra aplicación ya está buscando o descargando una actualización.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="128"/>
+        <source>Checking for updates...</source>
+        <translation>Buscando actualizaciones...</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="143"/>
+        <source>You have the latest version.</source>
+        <translation>Tiene instalada la versión más reciente.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="146"/>
+        <source>Available: TSSLimiterX %1, TSSLogViewer %2</source>
+        <translation>Disponibles: TSSLimiterX %1, TSSLogViewer %2</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="147"/>
+        <source>Available: TSSLogViewer %1</source>
+        <translation>Disponible: TSSLogViewer %1</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="162"/>
+        <source>Preparing download...</source>
+        <translation>Preparando la descarga...</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="189"/>
+        <source>The update is ready. Restart to install it.</source>
+        <translation>La actualización está lista. Reinicie para instalarla.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="196"/>
+        <source>Downloading update (%1 of %2)...</source>
+        <translation>Descargando actualización (%1 de %2)...</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="207"/>
+        <source>The download was interrupted. You can retry later.</source>
+        <translation>La descarga se interrumpió. Puede intentarlo de nuevo más tarde.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <source>Finish device operations and disconnect devices before updating the applications.</source>
+        <translation>Termine las operaciones con los dispositivos y desconéctelos antes de actualizar las aplicaciones.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="238"/>
+        <source>Update installation was cancelled or could not be started.</source>
+        <translation>La instalación de la actualización se canceló o no pudo iniciarse.</translation>
     </message>
 </context>
 </TS>

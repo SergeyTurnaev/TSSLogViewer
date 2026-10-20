@@ -128,7 +128,7 @@
     <message>
         <location filename="../../src/mainwindow.ui" line="68"/>
         <source>Update</source>
-        <translation>Actualizare</translation>
+        <translation>Actualizează</translation>
     </message>
     <message>
         <location filename="../../src/mainwindow.ui" line="114"/>
@@ -156,29 +156,35 @@
         <translation>Fișier</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.ui" line="174"/>
+        <location filename="../../src/mainwindow.ui" line="175"/>
         <source>Open file...</source>
         <translation>Deschidere fișier...</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.ui" line="179"/>
+        <location filename="../../src/mainwindow.ui" line="180"/>
         <source>Exit</source>
         <translation>Ieșire</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="179"/>
-        <location filename="../../src/mainwindow.cpp" line="328"/>
+        <location filename="../../src/mainwindow.ui" line="184"/>
+        <source>Application updates...</source>
+        <translation>Actualizări ale aplicațiilor...</translation>
+    </message>
+    <message>
+        <location filename="../../src/mainwindow.cpp" line="188"/>
+        <location filename="../../src/mainwindow.cpp" line="337"/>
+        <location filename="../../src/mainwindow.cpp" line="337"/>
         <source>Please select log file</source>
         <translation>Selectați fișierul jurnal</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="272"/>
+        <location filename="../../src/mainwindow.cpp" line="281"/>
         <source>No Name</source>
         <comment>The name of the device for the log</comment>
         <translation>Fără nume</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="284"/>
+        <location filename="../../src/mainwindow.cpp" line="293"/>
         <source> (not complete race)</source>
         <comment>Added to the log name if the log is not complete</comment>
         <translation> (cursă incompletă)</translation>
@@ -209,6 +215,157 @@
     <message>
         <source>Do you want to associate .tsslog files with TSSLogViewer?</source>
         <translation type="vanished">Doriți să asociați fișierele .tsslog cu TSSLogViewer?</translation>
+    </message>
+</context>
+<context>
+    <name>TSSUpdateDialog</name>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="5"/>
+        <source>Application updates</source>
+        <translation>Actualizări ale aplicațiilor</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="8"/>
+        <source>Check for a new application version.</source>
+        <translation>Caută o versiune nouă a aplicației.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="11"/>
+        <source>Check for updates automatically</source>
+        <translation>Caută automat actualizări</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="12"/>
+        <source>Download updates automatically</source>
+        <translation>Descarcă automat actualizările</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="13"/>
+        <source>Before restarting, close the other application and finish all device operations. Settings and logs will be preserved.</source>
+        <translation>Înainte de repornire, închide cealaltă aplicație și termină toate operațiunile cu dispozitivele. Setările și jurnalele vor fi păstrate.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="15"/>
+        <source>Check now</source>
+        <translation>Verifică acum</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="17"/>
+        <source>Download update</source>
+        <translation>Descarcă actualizarea</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="18"/>
+        <source>Update and restart</source>
+        <translation>Actualizează și repornește</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="19"/>
+        <source>Later</source>
+        <translation>Mai târziu</translation>
+    </message>
+</context>
+<context>
+    <name>UpdateController</name>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="40"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <source>Application updates</source>
+        <translation>Actualizări ale aplicațiilor</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="40"/>
+        <source>An interrupted update needs recovery. Start the application using its shortcut or run TSSUpdater.exe.</source>
+        <translation>O actualizare întreruptă trebuie recuperată. Pornește aplicația folosind scurtătura sau rulează TSSUpdater.exe.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
+        <source>An update is in progress. Please try again shortly.</source>
+        <translation>O actualizare este în curs. Încearcă din nou în scurt timp.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="76"/>
+        <source>Automatic updates are not configured for this build. Install a signed release to enable them.</source>
+        <translation>Actualizările automate nu sunt configurate pentru această compilare. Instalează o versiune semnată pentru a le activa.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="97"/>
+        <source>The update could not be installed. Your previous version was preserved.
+%1</source>
+        <translation>Actualizarea nu a putut fi instalată. Versiunea anterioară a fost păstrată.
+%1</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="98"/>
+        <source>The update was interrupted. The previous installation has been restored.</source>
+        <translation>Actualizarea a fost întreruptă. Instalarea anterioară a fost restaurată.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="116"/>
+        <source>Update failed: %1</source>
+        <translation>Actualizarea a eșuat: %1</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="125"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="159"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="159"/>
+        <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
+        <source>The other application is already checking or downloading an update.</source>
+        <translation>Cealaltă aplicație caută sau descarcă deja o actualizare.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="128"/>
+        <source>Checking for updates...</source>
+        <translation>Se caută actualizări...</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="143"/>
+        <source>You have the latest version.</source>
+        <translation>Ai instalată cea mai recentă versiune.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="146"/>
+        <source>Available: TSSLimiterX %1, TSSLogViewer %2</source>
+        <translation>Disponibile: TSSLimiterX %1, TSSLogViewer %2</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="147"/>
+        <source>Available: TSSLogViewer %1</source>
+        <translation>Disponibil: TSSLogViewer %1</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="162"/>
+        <source>Preparing download...</source>
+        <translation>Se pregătește descărcarea...</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="189"/>
+        <source>The update is ready. Restart to install it.</source>
+        <translation>Actualizarea este pregătită. Repornește pentru a o instala.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="196"/>
+        <source>Downloading update (%1 of %2)...</source>
+        <translation>Se descarcă actualizarea (%1 din %2)...</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="207"/>
+        <source>The download was interrupted. You can retry later.</source>
+        <translation>Descărcarea a fost întreruptă. Poți încerca din nou mai târziu.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <source>Finish device operations and disconnect devices before updating the applications.</source>
+        <translation>Termină operațiunile cu dispozitivele și deconectează-le înainte de actualizarea aplicațiilor.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/client/updatecontroller.cpp" line="238"/>
+        <source>Update installation was cancelled or could not be started.</source>
+        <translation>Instalarea actualizării a fost anulată sau nu a putut fi pornită.</translation>
     </message>
 </context>
 </TS>

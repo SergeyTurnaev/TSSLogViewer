@@ -163,6 +163,7 @@ QTableWidget {
      <string>File</string>
     </property>
     <addaction name="actionOpenFile"/>
+    <addaction name="actionApplicationUpdates"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -178,6 +179,9 @@ QTableWidget {
    <property name="text">
     <string>Exit</string>
    </property>
+  </action>
+  <action name="actionApplicationUpdates">
+   <property name="text"><string>Application updates...</string></property>
   </action>
  </widget>
  <customwidgets>

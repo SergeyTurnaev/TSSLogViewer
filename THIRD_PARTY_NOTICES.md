@@ -4,6 +4,13 @@
 каждого компонента сохраняют силу. Лицензия самого TSSLogViewer находится
 в [LICENSE](LICENSE); приведённые ниже уведомления её не заменяют.
 
+## Модуль обновлений TSSUpdater
+
+Модуль обновлений `updater/` — самостоятельный компонент TSSRacing под лицензией
+MIT: [текст лицензии](updater/LICENSE). Он может использоваться независимо от
+просмотрщика, в том числе в TSSLimiterX. В пакетах текст находится в
+`licenses/TSSUpdater/LICENSE`.
+
 ## QCustomPlot 2.1.1
 
 - Исходники: `thirdparty/qcustomplot/qcustomplot.h` и `qcustomplot.cpp`.
