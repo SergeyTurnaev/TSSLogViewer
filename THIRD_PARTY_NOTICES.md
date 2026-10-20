@@ -90,3 +90,16 @@ Qt не включён в исходники этого репозитория; 
 соответствующей версии согласно применимым условиям лицензий.
 
 Происхождение файлов лицензий описано в [licenses/SOURCES.md](licenses/SOURCES.md).
+
+## Обновления приложений
+
+- macOS: [Sparkle 2.10.0](https://github.com/sparkle-project/Sparkle/tree/2.10.0),
+  лицензии и уведомления — [updater/licenses/Sparkle.txt](updater/licenses/Sparkle.txt).
+- Linux: отдельный исходный бинарный пакет
+  [AppImageUpdate 2.0.0-alpha-1-20251018](https://github.com/AppImageCommunity/AppImageUpdate/tree/2.0.0-alpha-1-20251018),
+  [MIT-уведомление](updater/licenses/AppImageUpdate.txt). Вложенный AppImage
+  сохраняется целиком, включая его компоненты и уведомления.
+- Проверка RSA-подписи в Linux использует динамическую библиотеку
+  [OpenSSL](https://www.openssl.org/source/). В CI Ubuntu 22.04 используется
+  OpenSSL 3 по Apache License 2.0; уведомления установленного пакета включаются
+  в AppImage.

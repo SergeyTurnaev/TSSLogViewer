@@ -171,20 +171,20 @@
         <translation>Aggiornamenti delle applicazioni...</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="188"/>
-        <location filename="../../src/mainwindow.cpp" line="337"/>
-        <location filename="../../src/mainwindow.cpp" line="337"/>
+        <location filename="../../src/mainwindow.cpp" line="189"/>
+        <location filename="../../src/mainwindow.cpp" line="338"/>
+        <location filename="../../src/mainwindow.cpp" line="338"/>
         <source>Please select log file</source>
         <translation>Selezionare il file di registro</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="281"/>
+        <location filename="../../src/mainwindow.cpp" line="282"/>
         <source>No Name</source>
         <comment>The name of the device for the log</comment>
         <translation>Nessun nome</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="293"/>
+        <location filename="../../src/mainwindow.cpp" line="294"/>
         <source> (not complete race)</source>
         <comment>Added to the log name if the log is not complete</comment>
         <translation> (gara non completa)</translation>
@@ -273,6 +273,7 @@
         <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
         <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
         <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <location filename="../../updater/platform/linux.cpp" line="174"/>
         <source>Application updates</source>
         <translation>Aggiornamenti delle applicazioni</translation>
     </message>
@@ -305,6 +306,7 @@
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="116"/>
+        <location filename="../../updater/platform/linux.cpp" line="70"/>
         <source>Update failed: %1</source>
         <translation>Aggiornamento non riuscito: %1</translation>
     </message>
@@ -314,16 +316,19 @@
         <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
         <location filename="../../updater/client/updatecontroller.cpp" line="159"/>
         <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
+        <location filename="../../updater/platform/linux.cpp" line="78"/>
         <source>The other application is already checking or downloading an update.</source>
         <translation>L&apos;altra applicazione sta già cercando o scaricando un aggiornamento.</translation>
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="128"/>
+        <location filename="../../updater/platform/linux.cpp" line="90"/>
         <source>Checking for updates...</source>
         <translation>Ricerca aggiornamenti...</translation>
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="143"/>
+        <location filename="../../updater/platform/linux.cpp" line="113"/>
         <source>You have the latest version.</source>
         <translation>È installata la versione più recente.</translation>
     </message>
@@ -339,11 +344,13 @@
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="162"/>
+        <location filename="../../updater/platform/linux.cpp" line="135"/>
         <source>Preparing download...</source>
         <translation>Preparazione del download...</translation>
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="189"/>
+        <location filename="../../updater/platform/linux.cpp" line="161"/>
         <source>The update is ready. Restart to install it.</source>
         <translation>L&apos;aggiornamento è pronto. Riavvia per installarlo.</translation>
     </message>
@@ -354,11 +361,14 @@
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="207"/>
+        <location filename="../../updater/platform/linux.cpp" line="153"/>
         <source>The download was interrupted. You can retry later.</source>
         <translation>Il download è stato interrotto. Puoi riprovare più tardi.</translation>
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <location filename="../../updater/platform/linux.cpp" line="175"/>
+        <location filename="../../updater/platform/macos.mm" line="30"/>
         <source>Finish device operations and disconnect devices before updating the applications.</source>
         <translation>Termina le operazioni sui dispositivi e disconnettili prima di aggiornare le applicazioni.</translation>
     </message>
@@ -366,6 +376,16 @@
         <location filename="../../updater/client/updatecontroller.cpp" line="238"/>
         <source>Update installation was cancelled or could not be started.</source>
         <translation>L&apos;installazione dell&apos;aggiornamento è stata annullata o non è stato possibile avviarla.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/platform/linux.cpp" line="116"/>
+        <source>Available: %1 %2</source>
+        <translation>Disponibile: %1 %2</translation>
+    </message>
+    <message>
+        <location filename="../../updater/platform/linux.cpp" line="245"/>
+        <source>Automatic updates require a writable AppImage. Move it to a folder you own and start it there.</source>
+        <translation>Gli aggiornamenti automatici richiedono un file AppImage scrivibile. Spostalo in una cartella di tua proprietà e avvialo da lì.</translation>
     </message>
 </context>
 </TS>

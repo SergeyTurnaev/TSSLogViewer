@@ -86,7 +86,7 @@ jobs:
             libxcb-keysyms1 libxcb-randr0 libxcb-render0 libxcb-render-util0 \
             libxcb-shape0 libxcb-shm0 libxcb-sync1 libxcb-util1 \
             libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 \
-            libegl1 libopengl0 libfuse2
+            libegl1 libopengl0 libfuse2 libssl-dev zsync
 
       - name: Set up MSVC
         if: runner.os == 'Windows'
@@ -100,11 +100,23 @@ jobs:
 
       - name: Install Ninja (macOS)
         if: runner.os == 'macOS'
-        run: brew install ninja
+        run: |
+          brew install ninja openssl@3
+          echo "$(brew --prefix openssl@3)/bin" >> "$GITHUB_PATH"
+
+      - name: Prepare platform update configuration
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          set -eu
+          CHANNEL=viewer
+          if [ "$RUNNER_OS" = "macOS" ]; then CHANNEL=viewer-community; fi
+          echo "TSS_UPDATE_BUILD=$(date +%s)" >> "$GITHUB_ENV"
+          echo "TSS_UPDATE_CHANNEL=$CHANNEL" >> "$GITHUB_ENV"
 
       - name: Configure (Linux)
         if: runner.os == 'Linux'
-        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DTSS_UPDATE_BUILD=$TSS_UPDATE_BUILD -DTSS_UPDATE_CHANNEL=$TSS_UPDATE_CHANNEL
 
       - name: Configure (Windows)
         if: runner.os == 'Windows'
@@ -114,7 +126,7 @@ jobs:
       - name: Configure (macOS)
         if: runner.os == 'macOS'
         run: >
-          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DTSS_UPDATE_BUILD=$TSS_UPDATE_BUILD -DTSS_UPDATE_CHANNEL=$TSS_UPDATE_CHANNEL
           -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
           "-DCMAKE_OSX_ARCHITECTURES=${{ matrix.cmake_arch }}"
 
@@ -136,6 +148,16 @@ jobs:
           if ($LASTEXITCODE) { throw 'Updater protocol tests failed' }
           $fixture = Join-Path $env:ProgramFiles "TSSUpdaterTests-$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT"
           & ./updater/tests/integration.ps1 -Updater build-updater-tests/TSSUpdater.exe -CoreTests build-updater-tests/tss_update_tests.exe -PrivateKey "$keys/test-private.pem" -PublicKey "$keys/test-public.txt" -Workspace $fixture
+
+      - name: Test signed AppImage updates
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -eu
+          cmake -S updater/tests/platform -B build-platform-tests -G Ninja -DCMAKE_BUILD_TYPE=Release
+          python3 updater/tests/platform/fixtures.py build-platform-tests/fixtures
+          cmake --build build-platform-tests --parallel
+          ctest --test-dir build-platform-tests --output-on-failure
 
       - name: Read version
         id: version
@@ -233,6 +255,8 @@ jobs:
               cp "$QT_TRANSLATIONS/qtbase_${lang}.qm" "$APPDIR/usr/translations/"
             fi
           done
+          python3 updater/tools/platform-package.py prepare-linux --appdir "$APPDIR"
+          export UPDATE_INFORMATION="zsync|https://tsslimiter.com/updates/linux/$TSS_UPDATE_CHANNEL/latest.AppImage.zsync"
           ./tools/linuxdeploy --appdir "$APPDIR" --output appimage
           mv -v TSSLogViewer*.AppImage "${{ steps.version.outputs.artifact }}"
 
@@ -244,6 +268,9 @@ jobs:
           APP="build/${{ steps.version.outputs.stem }}.app"
           mv build/TSSLogViewer.app "$APP"
           macdeployqt "$APP" -always-overwrite
+          mkdir -p "$APP/Contents/Resources/licenses/TSSUpdater"
+          cp updater/LICENSE "$APP/Contents/Resources/licenses/TSSUpdater/TSSUpdater.txt"
+          cp updater/licenses/Sparkle.txt "$APP/Contents/Resources/licenses/TSSUpdater/"
           cp -R viewer-package/. "$APP/Contents/Resources/"
           QT_TRANSLATIONS=$(qmake -query QT_INSTALL_TRANSLATIONS)
           mkdir -p "$APP/Contents/Resources/translations"
@@ -253,10 +280,38 @@ jobs:
             fi
           done
           # Публичный CI не требует сертификатов: только локальная ad-hoc подпись, без нотарификации.
-          codesign --force --deep --sign - "$APP"
+          python3 updater/tools/sign-macos.py "$APP"
           codesign --verify --deep --strict "$APP"
           ditto -c -k --keepParent "$APP" "${{ steps.version.outputs.artifact }}"
           echo 'macOS artifact has an ad-hoc signature only; it is not Developer ID signed or notarized.' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Prepare signed platform update feed
+        if: runner.os != 'Windows'
+        shell: bash
+        env:
+          TSS_UPDATE_PRIVATE_KEY: ${{ secrets.TSS_UPDATE_PRIVATE_KEY }}
+          TSS_SPARKLE_PRIVATE_KEY: ${{ secrets.TSS_SPARKLE_PRIVATE_KEY }}
+          REQUIRE_SIGNATURE: ${{ inputs.require_signed_updates }}
+        run: |
+          set -eu
+          PLATFORM=linux
+          if [ "$RUNNER_OS" = "macOS" ]; then PLATFORM=macos; fi
+          REQUIRE=()
+          if [ "$REQUIRE_SIGNATURE" = "true" ]; then REQUIRE=(--require-signature); fi
+          python3 updater/tools/platform-package.py "$PLATFORM" \
+            --artifact "${{ steps.version.outputs.artifact }}" --app "TSSLogViewer" \
+            --version "$(cat build/VERSION.txt)" --build "$(cat build/UPDATE_BUILD.txt)" \
+            --channel "$TSS_UPDATE_CHANNEL" --sparkle "build/sparkle" \
+            --output "TSSLogViewer-$PLATFORM-update" "${REQUIRE[@]}"
+
+      - name: Upload signed platform update feed
+        if: runner.os != 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: TSSLogViewer-${{ runner.os }}-update
+          path: TSSLogViewer-*-update.zip
+          if-no-files-found: ignore
+          retention-days: 14
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

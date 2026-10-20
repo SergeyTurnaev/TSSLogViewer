@@ -171,20 +171,20 @@
         <translation>Actualizări ale aplicațiilor...</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="188"/>
-        <location filename="../../src/mainwindow.cpp" line="337"/>
-        <location filename="../../src/mainwindow.cpp" line="337"/>
+        <location filename="../../src/mainwindow.cpp" line="189"/>
+        <location filename="../../src/mainwindow.cpp" line="338"/>
+        <location filename="../../src/mainwindow.cpp" line="338"/>
         <source>Please select log file</source>
         <translation>Selectați fișierul jurnal</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="281"/>
+        <location filename="../../src/mainwindow.cpp" line="282"/>
         <source>No Name</source>
         <comment>The name of the device for the log</comment>
         <translation>Fără nume</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="293"/>
+        <location filename="../../src/mainwindow.cpp" line="294"/>
         <source> (not complete race)</source>
         <comment>Added to the log name if the log is not complete</comment>
         <translation> (cursă incompletă)</translation>
@@ -273,6 +273,7 @@
         <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
         <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
         <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <location filename="../../updater/platform/linux.cpp" line="174"/>
         <source>Application updates</source>
         <translation>Actualizări ale aplicațiilor</translation>
     </message>
@@ -305,6 +306,7 @@
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="116"/>
+        <location filename="../../updater/platform/linux.cpp" line="70"/>
         <source>Update failed: %1</source>
         <translation>Actualizarea a eșuat: %1</translation>
     </message>
@@ -314,16 +316,19 @@
         <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
         <location filename="../../updater/client/updatecontroller.cpp" line="159"/>
         <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
+        <location filename="../../updater/platform/linux.cpp" line="78"/>
         <source>The other application is already checking or downloading an update.</source>
         <translation>Cealaltă aplicație caută sau descarcă deja o actualizare.</translation>
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="128"/>
+        <location filename="../../updater/platform/linux.cpp" line="90"/>
         <source>Checking for updates...</source>
         <translation>Se caută actualizări...</translation>
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="143"/>
+        <location filename="../../updater/platform/linux.cpp" line="113"/>
         <source>You have the latest version.</source>
         <translation>Ai instalată cea mai recentă versiune.</translation>
     </message>
@@ -339,11 +344,13 @@
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="162"/>
+        <location filename="../../updater/platform/linux.cpp" line="135"/>
         <source>Preparing download...</source>
         <translation>Se pregătește descărcarea...</translation>
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="189"/>
+        <location filename="../../updater/platform/linux.cpp" line="161"/>
         <source>The update is ready. Restart to install it.</source>
         <translation>Actualizarea este pregătită. Repornește pentru a o instala.</translation>
     </message>
@@ -354,11 +361,14 @@
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="207"/>
+        <location filename="../../updater/platform/linux.cpp" line="153"/>
         <source>The download was interrupted. You can retry later.</source>
         <translation>Descărcarea a fost întreruptă. Poți încerca din nou mai târziu.</translation>
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <location filename="../../updater/platform/linux.cpp" line="175"/>
+        <location filename="../../updater/platform/macos.mm" line="30"/>
         <source>Finish device operations and disconnect devices before updating the applications.</source>
         <translation>Termină operațiunile cu dispozitivele și deconectează-le înainte de actualizarea aplicațiilor.</translation>
     </message>
@@ -366,6 +376,16 @@
         <location filename="../../updater/client/updatecontroller.cpp" line="238"/>
         <source>Update installation was cancelled or could not be started.</source>
         <translation>Instalarea actualizării a fost anulată sau nu a putut fi pornită.</translation>
+    </message>
+    <message>
+        <location filename="../../updater/platform/linux.cpp" line="116"/>
+        <source>Available: %1 %2</source>
+        <translation>Disponibil: %1 %2</translation>
+    </message>
+    <message>
+        <location filename="../../updater/platform/linux.cpp" line="245"/>
+        <source>Automatic updates require a writable AppImage. Move it to a folder you own and start it there.</source>
+        <translation>Actualizările automate necesită un fișier AppImage cu permisiune de scriere. Mutați-l într-un dosar care vă aparține și porniți-l de acolo.</translation>
     </message>
 </context>
 </TS>

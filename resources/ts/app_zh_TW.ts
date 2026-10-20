@@ -179,20 +179,20 @@
         <translation>程式更新…</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="188"/>
-        <location filename="../../src/mainwindow.cpp" line="337"/>
-        <location filename="../../src/mainwindow.cpp" line="337"/>
+        <location filename="../../src/mainwindow.cpp" line="189"/>
+        <location filename="../../src/mainwindow.cpp" line="338"/>
+        <location filename="../../src/mainwindow.cpp" line="338"/>
         <source>Please select log file</source>
         <translation>請選擇日誌文件</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="281"/>
+        <location filename="../../src/mainwindow.cpp" line="282"/>
         <source>No Name</source>
         <comment>The name of the device for the log</comment>
         <translation>無名稱</translation>
     </message>
     <message>
-        <location filename="../../src/mainwindow.cpp" line="293"/>
+        <location filename="../../src/mainwindow.cpp" line="294"/>
         <source> (not complete race)</source>
         <comment>Added to the log name if the log is not complete</comment>
         <translation>（比賽未完成）</translation>
@@ -281,6 +281,7 @@
         <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
         <location filename="../../updater/client/updatecontroller.cpp" line="45"/>
         <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <location filename="../../updater/platform/linux.cpp" line="174"/>
         <source>Application updates</source>
         <translation>程式更新</translation>
     </message>
@@ -313,6 +314,7 @@
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="116"/>
+        <location filename="../../updater/platform/linux.cpp" line="70"/>
         <source>Update failed: %1</source>
         <translation>更新失敗：%1</translation>
     </message>
@@ -322,16 +324,19 @@
         <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
         <location filename="../../updater/client/updatecontroller.cpp" line="159"/>
         <location filename="../../updater/client/updatecontroller.cpp" line="222"/>
+        <location filename="../../updater/platform/linux.cpp" line="78"/>
         <source>The other application is already checking or downloading an update.</source>
         <translation>另一個程式正在檢查或下載更新。</translation>
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="128"/>
+        <location filename="../../updater/platform/linux.cpp" line="90"/>
         <source>Checking for updates...</source>
         <translation>正在檢查更新…</translation>
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="143"/>
+        <location filename="../../updater/platform/linux.cpp" line="113"/>
         <source>You have the latest version.</source>
         <translation>您已安裝最新版本。</translation>
     </message>
@@ -347,11 +352,13 @@
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="162"/>
+        <location filename="../../updater/platform/linux.cpp" line="135"/>
         <source>Preparing download...</source>
         <translation>正在準備下載…</translation>
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="189"/>
+        <location filename="../../updater/platform/linux.cpp" line="161"/>
         <source>The update is ready. Restart to install it.</source>
         <translation>更新已準備就緒。請重新啟動以安裝。</translation>
     </message>
@@ -362,11 +369,14 @@
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="207"/>
+        <location filename="../../updater/platform/linux.cpp" line="153"/>
         <source>The download was interrupted. You can retry later.</source>
         <translation>下載已中斷。您可以稍後重試。</translation>
     </message>
     <message>
         <location filename="../../updater/client/updatecontroller.cpp" line="217"/>
+        <location filename="../../updater/platform/linux.cpp" line="175"/>
+        <location filename="../../updater/platform/macos.mm" line="30"/>
         <source>Finish device operations and disconnect devices before updating the applications.</source>
         <translation>更新程式前，請完成裝置操作並中斷裝置連線。</translation>
     </message>
@@ -374,6 +384,16 @@
         <location filename="../../updater/client/updatecontroller.cpp" line="238"/>
         <source>Update installation was cancelled or could not be started.</source>
         <translation>更新安裝已取消或無法啟動。</translation>
+    </message>
+    <message>
+        <location filename="../../updater/platform/linux.cpp" line="116"/>
+        <source>Available: %1 %2</source>
+        <translation>可用版本：%1 %2</translation>
+    </message>
+    <message>
+        <location filename="../../updater/platform/linux.cpp" line="245"/>
+        <source>Automatic updates require a writable AppImage. Move it to a folder you own and start it there.</source>
+        <translation>自動更新需要可寫入的 AppImage。請將它移至您擁有的資料夾，然後從該處啟動。</translation>
     </message>
 </context>
 </TS>

@@ -95,12 +95,7 @@ if(UNIX AND NOT APPLE)
     endforeach()
 endif()
 
-if(WIN32)
-    find_package(Qt6 REQUIRED COMPONENTS Network Concurrent)
-    add_subdirectory(updater)
-    target_link_libraries(TSSLogViewer PRIVATE tss_update_client)
-    set(UPDATE_TRANSLATION_SOURCES updater/client/updatecontroller.cpp updater/client/updatedialog.ui)
-endif()
+include("${CMAKE_CURRENT_SOURCE_DIR}/updater/platform/application.cmake")
 
 qt_add_translations(TSSLogViewer
     TS_FILES ${TS_FILES}

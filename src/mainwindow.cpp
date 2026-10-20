@@ -3,13 +3,13 @@
 #include "ui_mainwindow.h"
 
 #include <QFileDialog>
+#include <QAbstractItemView>
+#include <QStyle>
 #include <QTimer>
 #include <QLibraryInfo>
 #include "Zippy/Zippy.hpp"
 #include "plotview.h"
-#ifdef Q_OS_WIN
 #include "updatecontroller.h"
-#endif
 
 void MainWindow::setupLocale()
 {
@@ -30,6 +30,8 @@ void MainWindow::setupLocale()
     QStringList supportedLanguages = QString(SUPPORTED_LANGUAGES).split(" ");
 
     QComboBox *langBox = new QComboBox();
+    langBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    langBox->setMaxVisibleItems(supportedLanguages.size());
     for (const auto& lang : supportedLanguages) {
         if(langCodeToName[lang].isEmpty())
             langCodeToName[lang] = lang;
@@ -37,6 +39,9 @@ void MainWindow::setupLocale()
                          langCodeToName[lang]);
         langBox->setItemData(langBox->count() - 1, lang);
     }
+    // Полоса прокрутки не должна отнимать место у названий языков.
+    langBox->view()->setMinimumWidth(langBox->sizeHint().width()
+        + langBox->style()->pixelMetric(QStyle::PM_ScrollBarExtent));
 #ifdef Q_OS_MACOS
     ui->menubar->setNativeMenuBar(false);
 #endif
@@ -94,11 +99,7 @@ MainWindow::MainWindow(std::list<std::shared_ptr<QTranslator>> translators, QWid
 
     setupLocale();
 
-#ifdef Q_OS_WIN
     new UpdateController(this, ui->actionApplicationUpdates, [] { return QApplication::activeModalWidget() == nullptr; });
-#else
-    ui->actionApplicationUpdates->setVisible(false);
-#endif
 
     QSettings settings;
     restoreGeometry(settings.value("geometry").toByteArray());

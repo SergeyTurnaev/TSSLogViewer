@@ -35,3 +35,6 @@ Thumbs.db
 
 # Закрытые ключи обновлений никогда не публикуются.
 *-private.pem
+.update-signing/
+__pycache__/
+*.pyc

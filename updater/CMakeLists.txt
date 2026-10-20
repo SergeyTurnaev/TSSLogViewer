@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 project(TSSUpdater VERSION 1.0 LANGUAGES CXX)
 if(NOT WIN32)
+    add_subdirectory(platform)
     return()
 endif()
 set(CMAKE_CXX_STANDARD 17)
