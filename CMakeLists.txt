@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(TSSLogViewer VERSION 26.2 LANGUAGES CXX)
+project(TSSLogViewer VERSION 26.3 LANGUAGES CXX)
 
 file(WRITE "${CMAKE_BINARY_DIR}/VERSION.txt" "${PROJECT_VERSION}")
 
