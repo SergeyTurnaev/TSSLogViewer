@@ -296,13 +296,13 @@ jobs:
           set -eu
           PLATFORM=linux
           if [ "$RUNNER_OS" = "macOS" ]; then PLATFORM=macos; fi
-          REQUIRE=()
-          if [ "$REQUIRE_SIGNATURE" = "true" ]; then REQUIRE=(--require-signature); fi
+          set --
+          if [ "$REQUIRE_SIGNATURE" = "true" ]; then set -- --require-signature; fi
           python3 updater/tools/platform-package.py "$PLATFORM" \
             --artifact "${{ steps.version.outputs.artifact }}" --app "TSSLogViewer" \
             --version "$(cat build/VERSION.txt)" --build "$(cat build/UPDATE_BUILD.txt)" \
             --channel "$TSS_UPDATE_CHANNEL" --sparkle "build/sparkle" \
-            --output "TSSLogViewer-$PLATFORM-update" "${REQUIRE[@]}"
+            --output "TSSLogViewer-$PLATFORM-update" "$@"
 
       - name: Upload signed platform update feed
         if: runner.os != 'Windows'
