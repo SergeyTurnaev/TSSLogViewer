@@ -10,6 +10,30 @@
 #import <Cocoa/Cocoa.h>
 #import <Sparkle/Sparkle.h>
 
+@interface TSSSparkleUserDriver : SPUStandardUserDriver
+@end
+
+@implementation TSSSparkleUserDriver
+- (void)showUpdaterError:(NSError *)error acknowledgement:(void (^)(void))acknowledgement {
+    // Меняем только пояснение App Translocation, сохраняя обработку ошибки в Sparkle.
+    if ([error.domain isEqualToString:SUSparkleErrorDomain] && error.code == SURunningTranslocated) {
+        const auto title = UpdateController::tr("Cannot update a temporary copy of the application").toUtf8();
+        const auto text = UpdateController::tr(
+            "macOS has opened a temporary, read-only copy of this application (App Translocation), "
+            "so it cannot be updated in this session.\n\n"
+            "Quit the application. In Finder, move the original .app to Applications (/Applications) "
+            "or to your personal Applications folder (~/Applications), then launch it from there "
+            "and check for updates again.\n\n"
+            "If the .app is already there, move it to another folder and back using Finder before relaunching.").toUtf8();
+        NSMutableDictionary* userInfo = [error.userInfo mutableCopy];
+        userInfo[NSLocalizedDescriptionKey] = [NSString stringWithUTF8String:title.constData()];
+        userInfo[NSLocalizedRecoverySuggestionErrorKey] = [NSString stringWithUTF8String:text.constData()];
+        error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
+    }
+    [super showUpdaterError:error acknowledgement:acknowledgement];
+}
+@end
+
 @interface TSSSparkleDelegate : NSObject <SPUUpdaterDelegate> {
 @public
     std::function<bool()> canInstall;
@@ -56,7 +80,8 @@ struct UpdateController::Impl {
     QDialog* dialog;
     Ui::TSSUpdateDialog ui;
     TSSSparkleDelegate* delegate;
-    SPUStandardUpdaterController* sparkle;
+    TSSSparkleUserDriver* userDriver;
+    SPUUpdater* sparkle;
     explicit Impl(QWidget* window) : dialog(new QDialog(window)) {}
 };
 
@@ -69,26 +94,28 @@ UpdateController::UpdateController(QWidget* window, QAction* action, std::functi
     d->delegate = [TSSSparkleDelegate new];
     d->delegate->canInstall = std::move(canInstall);
     d->delegate->russianMirror = QLocale().language() == QLocale::Russian;
-    d->sparkle = [[SPUStandardUpdaterController alloc] initWithStartingUpdater:NO
-        updaterDelegate:d->delegate userDriverDelegate:nil];
-    SPUUpdater* updater = d->sparkle.updater;
+    NSBundle* bundle = [NSBundle mainBundle];
+    d->userDriver = [[TSSSparkleUserDriver alloc] initWithHostBundle:bundle delegate:nil];
+    d->sparkle = [[SPUUpdater alloc] initWithHostBundle:bundle applicationBundle:bundle
+        userDriver:d->userDriver delegate:d->delegate];
+    SPUUpdater* updater = d->sparkle;
     d->ui.automaticCheck->setChecked(updater.automaticallyChecksForUpdates);
     d->ui.automaticDownload->setChecked(updater.automaticallyDownloadsUpdates);
     connect(d->ui.automaticCheck, &QCheckBox::toggled, this, [this](bool enabled) {
-        d->sparkle.updater.automaticallyChecksForUpdates = enabled;
+        d->sparkle.automaticallyChecksForUpdates = enabled;
     });
     connect(d->ui.automaticDownload, &QCheckBox::toggled, this, [this](bool enabled) {
-        d->sparkle.updater.automaticallyDownloadsUpdates = enabled;
+        d->sparkle.automaticallyDownloadsUpdates = enabled;
     });
     connect(action, &QAction::triggered, this, [this] {
-        d->ui.automaticCheck->setChecked(d->sparkle.updater.automaticallyChecksForUpdates);
-        d->ui.automaticDownload->setChecked(d->sparkle.updater.automaticallyDownloadsUpdates);
+        d->ui.automaticCheck->setChecked(d->sparkle.automaticallyChecksForUpdates);
+        d->ui.automaticDownload->setChecked(d->sparkle.automaticallyDownloadsUpdates);
         d->dialog->show(); d->dialog->raise(); d->dialog->activateWindow();
     });
     connect(d->ui.later, &QPushButton::clicked, d->dialog, &QDialog::hide);
     connect(d->ui.check, &QPushButton::clicked, this, [this] {
         d->dialog->hide();
-        [d->sparkle checkForUpdates:nil];
+        [d->sparkle checkForUpdates];
     });
     auto timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, [this] {
@@ -99,7 +126,13 @@ UpdateController::UpdateController(QWidget* window, QAction* action, std::functi
         }
     });
     timer->start(1000);
-    [d->sparkle startUpdater];
+    NSError* startupError = nil;
+    if (![d->sparkle startUpdater:&startupError]) {
+        // Как и стандартный контроллер Sparkle, показываем ошибку после запуска приложения.
+        QTimer::singleShot(1000, this, [this, startupError] {
+            [d->userDriver showUpdaterError:startupError acknowledgement:^{}];
+        });
+    }
 }
 UpdateController::~UpdateController() { d->delegate.pendingInstall = nil; }
 bool UpdateController::eventFilter(QObject* object, QEvent* event) {

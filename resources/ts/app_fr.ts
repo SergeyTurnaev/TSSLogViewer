@@ -392,5 +392,23 @@
         <source>Automatic updates require a writable AppImage. Move it to a folder you own and start it there.</source>
         <translation>Les mises à jour automatiques nécessitent un AppImage accessible en écriture. Déplacez-le dans un dossier qui vous appartient et lancez-le depuis ce dossier.</translation>
     </message>
+    <message>
+        <location filename="../../updater/platform/macos.mm" line="20"/>
+        <source>Cannot update a temporary copy of the application</source>
+        <translation>Impossible de mettre à jour une copie temporaire de l’application</translation>
+    </message>
+    <message>
+        <location filename="../../updater/platform/macos.mm" line="21"/>
+        <source>macOS has opened a temporary, read-only copy of this application (App Translocation), so it cannot be updated in this session.
+
+Quit the application. In Finder, move the original .app to Applications (/Applications) or to your personal Applications folder (~/Applications), then launch it from there and check for updates again.
+
+If the .app is already there, move it to another folder and back using Finder before relaunching.</source>
+        <translation>macOS a ouvert une copie temporaire en lecture seule de cette application (App Translocation). Elle ne peut donc pas être mise à jour pendant cette session.
+
+Quittez l’application. Dans le Finder, déplacez le fichier .app d’origine vers le dossier Applications (/Applications) ou votre dossier Applications personnel (~/Applications), puis lancez-le depuis ce dossier et recherchez à nouveau les mises à jour.
+
+Si le fichier .app s’y trouve déjà, déplacez-le vers un autre dossier, puis remettez-le à sa place avec le Finder avant de le relancer.</translation>
+    </message>
 </context>
 </TS>

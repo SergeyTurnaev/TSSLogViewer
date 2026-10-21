@@ -400,5 +400,23 @@
         <source>Automatic updates require a writable AppImage. Move it to a folder you own and start it there.</source>
         <translation>自動更新需要可寫入的 AppImage。請將它移至您擁有的資料夾，然後從該處啟動。</translation>
     </message>
+    <message>
+        <location filename="../../updater/platform/macos.mm" line="20"/>
+        <source>Cannot update a temporary copy of the application</source>
+        <translation>無法更新應用程式的暫存副本</translation>
+    </message>
+    <message>
+        <location filename="../../updater/platform/macos.mm" line="21"/>
+        <source>macOS has opened a temporary, read-only copy of this application (App Translocation), so it cannot be updated in this session.
+
+Quit the application. In Finder, move the original .app to Applications (/Applications) or to your personal Applications folder (~/Applications), then launch it from there and check for updates again.
+
+If the .app is already there, move it to another folder and back using Finder before relaunching.</source>
+        <translation>macOS 已開啟此應用程式的唯讀暫存副本（App Translocation），因此無法在本次執行期間更新。
+
+請結束應用程式。在 Finder 中，將原始 .app 移至「應用程式」資料夾（/Applications）或您的個人應用程式資料夾（~/Applications），再從該處啟動並重新檢查更新。
+
+如果 .app 已在該處，請先使用 Finder 將它移至其他資料夾再移回，然後重新啟動。</translation>
+    </message>
 </context>
 </TS>

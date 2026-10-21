@@ -392,5 +392,23 @@
         <source>Automatic updates require a writable AppImage. Move it to a folder you own and start it there.</source>
         <translation>Actualizările automate necesită un fișier AppImage cu permisiune de scriere. Mutați-l într-un dosar care vă aparține și porniți-l de acolo.</translation>
     </message>
+    <message>
+        <location filename="../../updater/platform/macos.mm" line="20"/>
+        <source>Cannot update a temporary copy of the application</source>
+        <translation>Nu se poate actualiza o copie temporară a aplicației</translation>
+    </message>
+    <message>
+        <location filename="../../updater/platform/macos.mm" line="21"/>
+        <source>macOS has opened a temporary, read-only copy of this application (App Translocation), so it cannot be updated in this session.
+
+Quit the application. In Finder, move the original .app to Applications (/Applications) or to your personal Applications folder (~/Applications), then launch it from there and check for updates again.
+
+If the .app is already there, move it to another folder and back using Finder before relaunching.</source>
+        <translation>macOS a deschis o copie temporară a acestei aplicații, disponibilă doar pentru citire (App Translocation), astfel că nu poate fi actualizată în această sesiune.
+
+Închide aplicația. În Finder, mută fișierul .app original în dosarul Aplicații (/Applications) sau în dosarul tău personal de aplicații (~/Applications), apoi pornește-l de acolo și caută din nou actualizări.
+
+Dacă fișierul .app se află deja acolo, mută-l în alt dosar și apoi înapoi folosind Finder înainte de a-l reporni.</translation>
+    </message>
 </context>
 </TS>
