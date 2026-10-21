@@ -10,6 +10,7 @@
    <item><widget class="QProgressBar" name="progress"><property name="value"><number>0</number></property></widget></item>
    <item><widget class="QCheckBox" name="automaticCheck"><property name="text"><string>Check for updates automatically</string></property></widget></item>
    <item><widget class="QCheckBox" name="automaticDownload"><property name="text"><string>Download updates automatically</string></property></widget></item>
+   <item><widget class="QLabel" name="appImageHint"><property name="visible"><bool>false</bool></property><property name="text"><string>Only this application is updated. No system services are installed. The previous version is kept as a backup.</string></property><property name="wordWrap"><bool>true</bool></property><property name="textFormat"><enum>Qt::PlainText</enum></property></widget></item>
    <item><widget class="QLabel" name="hint"><property name="text"><string>Before restarting, close the other application and finish all device operations. Settings and logs will be preserved.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
    <item><layout class="QHBoxLayout" name="buttons">
     <item><widget class="QPushButton" name="check"><property name="text"><string>Check now</string></property></widget></item>

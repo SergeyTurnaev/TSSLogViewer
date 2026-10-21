@@ -272,6 +272,11 @@
         <source>Later</source>
         <translation>稍後</translation>
     </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="13"/>
+        <source>Only this application is updated. No system services are installed. The previous version is kept as a backup.</source>
+        <translation>只會更新此應用程式，不會安裝系統服務。舊版本會保留為備份。</translation>
+    </message>
 </context>
 <context>
     <name>UpdateController</name>

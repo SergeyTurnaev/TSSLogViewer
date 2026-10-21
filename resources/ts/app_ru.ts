@@ -272,6 +272,11 @@
         <source>Later</source>
         <translation>Позже</translation>
     </message>
+    <message>
+        <location filename="../../updater/client/updatedialog.ui" line="13"/>
+        <source>Only this application is updated. No system services are installed. The previous version is kept as a backup.</source>
+        <translation>Обновляется только эта программа. Системные службы не устанавливаются. Предыдущая версия сохраняется как резервная копия.</translation>
+    </message>
 </context>
 <context>
     <name>UpdateController</name>

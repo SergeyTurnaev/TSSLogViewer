@@ -210,6 +210,7 @@ struct UpdateController::Impl {
 UpdateController::UpdateController(QWidget* window, QAction* action, std::function<bool()> canInstall)
     : QObject(window), d(std::make_unique<Impl>(this, window, std::move(canInstall))) {
     d->ui.setupUi(d->dialog); d->dialog->installEventFilter(this); d->ui.notes->hide();
+    d->ui.appImageHint->show();
     d->settings.beginGroup("AppImageUpdate");
     d->original = qEnvironmentVariable("APPIMAGE");
     d->originalInfo = QFileInfo(d->original);
@@ -220,7 +221,7 @@ UpdateController::UpdateController(QWidget* window, QAction* action, std::functi
     d->mirrors = {QString("https://tsslimiter.com/updates/linux/%1/").arg(TSS_UPDATE_CHANNEL),
                   QString("https://tsslimiter.ru/updates/linux/%1/").arg(TSS_UPDATE_CHANNEL)};
     d->ui.automaticCheck->setChecked(d->settings.value("automaticCheck", true).toBool());
-    d->ui.automaticDownload->setChecked(d->settings.value("automaticDownload", true).toBool());
+    d->ui.automaticDownload->setChecked(d->settings.value("automaticDownload", false).toBool());
     connect(action, &QAction::triggered, this, [this] { d->show(); });
     connect(d->ui.later, &QPushButton::clicked, d->dialog, &QDialog::hide);
     connect(d->ui.check, &QPushButton::clicked, this, [this] { d->check(true); });
