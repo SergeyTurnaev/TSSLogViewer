@@ -31,7 +31,7 @@ cmake --build build
 
 - Push в `main` и pull request проверяют Linux-сборку.
 - Теги `v*` и ручной запуск `build` собирают Windows x64 ZIP, Linux AppImage
-  и macOS universal `.app.zip`.
+  и macOS universal `.dmg` с перетаскиванием приложения в «Программы».
 - Ручной `release` собирает выбранный существующий тег и создаёт релиз,
   по умолчанию черновик.
 - Сборка не требует доступа к приватным репозиториям или секретам проекта.

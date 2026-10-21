@@ -104,6 +104,12 @@ jobs:
           brew install ninja openssl@3
           echo "$(brew --prefix openssl@3)/bin" >> "$GITHUB_PATH"
 
+      - name: Install DMG packaging tools
+        if: runner.os == 'macOS'
+        run: |
+          python3 -m venv "$RUNNER_TEMP/dmgbuild-venv"
+          "$RUNNER_TEMP/dmgbuild-venv/bin/python" -m pip install -r packaging/macos/requirements-dmg.txt
+
       - name: Prepare platform update configuration
         if: runner.os != 'Windows'
         shell: bash
@@ -172,11 +178,15 @@ jobs:
           STEM="TSSLogViewer-v${VERSION}"
           case "${{ matrix.package }}" in
             appimage) ART="${STEM}-linux-${{ matrix.arch }}.AppImage" ;;
-            macapp) ART="${STEM}-macos-${{ matrix.arch }}.app.zip" ;;
+            macapp) ART="${STEM}-macos-${{ matrix.arch }}.dmg" ;;
             winzip) ART="${STEM}-windows-${{ matrix.arch }}.zip" ;;
           esac
           echo "stem=$STEM" >> "$GITHUB_OUTPUT"
           echo "artifact=$ART" >> "$GITHUB_OUTPUT"
+          # Sparkle получает отдельный ZIP из той же подписанной программы.
+          UPDATE_ART="$ART"
+          if [ "${{ matrix.package }}" = "macapp" ]; then UPDATE_ART="${STEM}-macos-${{ matrix.arch }}.app.zip"; fi
+          echo "update_artifact=$UPDATE_ART" >> "$GITHUB_OUTPUT"
 
       - name: Prepare matching sources and licenses
         shell: bash
@@ -265,8 +275,7 @@ jobs:
         shell: bash
         run: |
           set -eux
-          APP="build/${{ steps.version.outputs.stem }}.app"
-          mv build/TSSLogViewer.app "$APP"
+          APP="build/TSSLogViewer.app"
           macdeployqt "$APP" -always-overwrite
           mkdir -p "$APP/Contents/Resources/licenses/TSSUpdater"
           cp updater/LICENSE "$APP/Contents/Resources/licenses/TSSUpdater/TSSUpdater.txt"
@@ -282,7 +291,9 @@ jobs:
           # Публичный CI не требует сертификатов: только локальная ad-hoc подпись, без нотарификации.
           python3 updater/tools/sign-macos.py "$APP"
           codesign --verify --deep --strict "$APP"
-          ditto -c -k --keepParent "$APP" "${{ steps.version.outputs.artifact }}"
+          ditto -c -k --keepParent "$APP" "${{ steps.version.outputs.update_artifact }}"
+          "$RUNNER_TEMP/dmgbuild-venv/bin/python" packaging/macos/create-dmg.py \
+            --app "$APP" --output "${{ steps.version.outputs.artifact }}"
           echo 'macOS artifact has an ad-hoc signature only; it is not Developer ID signed or notarized.' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Prepare signed platform update feed
@@ -299,7 +310,7 @@ jobs:
           set --
           if [ "$REQUIRE_SIGNATURE" = "true" ]; then set -- --require-signature; fi
           python3 updater/tools/platform-package.py "$PLATFORM" \
-            --artifact "${{ steps.version.outputs.artifact }}" --app "TSSLogViewer" \
+            --artifact "${{ steps.version.outputs.update_artifact }}" --app "TSSLogViewer" \
             --version "$(cat build/VERSION.txt)" --build "$(cat build/UPDATE_BUILD.txt)" \
             --channel "$TSS_UPDATE_CHANNEL" --sparkle "build/sparkle" \
             --output "TSSLogViewer-$PLATFORM-update" "$@"
